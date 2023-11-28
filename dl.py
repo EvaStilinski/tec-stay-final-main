@@ -17,7 +17,8 @@ MAX_SEQ_LENGTH = 50
 BATCH_SIZE = 32
 EMBEDDING_DIM = 100
 HIDDEN_DIM = 128
-EPOCHS = 5
+EPOCHS = 10
+
 
 # Load and preprocess data
 def load_data(file_path):
@@ -48,21 +49,21 @@ encoded_test_labels, _ = encode_labels(test_labels)
 
 # Dataset
 class EmotionDataset(Dataset):
-    def _init_(self, texts, labels, word_to_idx):
+    def __init__(self, texts, labels, word_to_idx):
         self.texts = [torch.tensor(tokenize(text)) for text in texts]
         self.labels = torch.tensor(labels)
     
-    def _len_(self):
+    def __len__(self):
         return len(self.texts)
     
-    def _getitem_(self, idx):
+    def __getitem__(self, idx):
         return self.texts[idx], self.labels[idx]
 
 # Padding function
 def collate_fn(batch):
     texts, labels = zip(*batch)
     texts = pad_sequence(texts, batch_first=True, padding_value=word_to_idx['<PAD>'])
-    return texts, torch.tensor(labels)
+    return texts, torch.tensor(labels).type(torch.LongTensor)
 
 # Data Loaders
 train_dataset = EmotionDataset(train_texts, encoded_train_labels, word_to_idx)
@@ -73,8 +74,8 @@ test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, col
 
 # LSTM Model
 class LSTMEmotionClassifier(nn.Module):
-    def _init_(self, vocab_size, embed_dim, hidden_dim, num_classes):
-        super(LSTMEmotionClassifier, self)._init_()
+    def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes):
+        super(LSTMEmotionClassifier, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=word_to_idx['<PAD>'])
         self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True)
         self.fc = nn.Linear(hidden_dim, num_classes)

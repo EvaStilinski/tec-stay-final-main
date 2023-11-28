@@ -66,7 +66,7 @@ if __name__ == '__main__':
     test_file_path = 'data/test.txt'    
 
     # Hyperparameters:
-    increment_step = 5
+    increment_step = 10
     max_word_count = 200
 
      # Lists to store results for plotting

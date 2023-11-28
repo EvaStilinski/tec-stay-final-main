@@ -78,7 +78,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 # Data loaders
 train_dataset = EmotionDataset(train_texts, train_labels, word_to_idx)
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-
+ 
 test_dataset = EmotionDataset(test_texts, test_labels, word_to_idx)
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
