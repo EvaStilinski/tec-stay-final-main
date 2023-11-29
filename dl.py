@@ -13,7 +13,7 @@ train_losses = []
 train_accuracies = []
 
 # Parameters
-MAX_SEQ_LENGTH = 50
+MAX_SEQ_LENGTH = 20
 BATCH_SIZE = 32
 EMBEDDING_DIM = 100
 HIDDEN_DIM = 128
